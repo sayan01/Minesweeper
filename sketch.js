@@ -62,11 +62,13 @@ function display(){
             else if(grid[i][j] >= 0 ) {
                 fill(200);
                 rect(sc/2, sc/2, sc-10, sc-10, 15, 15, 15, 15);
-                fill(25);
-                textSize(32);
-                textFont('Helvetica');
-                textAlign(CENTER, CENTER);
-                text(grid[i][j]+"", sc/2, sc/2);
+                if(grid[i][j] !== 0){
+                    fill(25);
+                    textSize(32);
+                    textFont('Helvetica');
+                    textAlign(CENTER, CENTER);
+                    text(grid[i][j]+"", sc/2, sc/2);
+                }
             }
             else {                     // if ( grid[i][j] === -5 )
                 fill(220,50,50);
