@@ -5,6 +5,7 @@ var canvas_size;
 var sc;
 var gameOver;
 function setup() {
+    console.log("Version 1.5");
     document.addEventListener('contextmenu', event => event.preventDefault());
     canvas_size = 800;
     createCanvas(canvas_size , canvas_size);
@@ -15,7 +16,7 @@ function setup() {
     setgrid();
 
     //reset button
-    button = createButton('reset',5);
+    button = createButton('reset');
     button.position(300, 800);
     button.size(170,100);
     button.style('font-size','300%');
