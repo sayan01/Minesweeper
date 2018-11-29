@@ -4,14 +4,28 @@ var grid_size;
 var canvas_size;
 var sc;
 var gameOver;
+var count;
+var won = false;
+var myfont;
+function preload(){
+    try{
+        myfont = loadFont('http://sayan01.github.io/Minesweeper/assets/text.ttf');
+    }
+    catch(e){
+
+    }
+}
 function setup() {
-    console.log("Version 1.5");
-    document.addEventListener('contextmenu', event => event.preventDefault());
+    console.log("Version 1.9");
     canvas_size = 800;
     createCanvas(canvas_size , canvas_size);
-    grid_size = 10;
+    grid_size = 15;
     isgameOver = false;
-    grid = [[-2,-2,-2,-2,-2,-2,-2,-2,-2,-2],[-2,-2,-2,-2,-2,-2,-2,-2,-2,-2],[-2,-2,-2,-2,-2,-2,-2,-2,-2,-2],[-2,-2,-2,-2,-2,-2,-2,-2,-2,-2],[-2,-2,-2,-2,-2,-2,-2,-2,-2,-2],[-2,-2,-2,-2,-2,-2,-2,-2,-2,-2],[-2,-2,-2,-2,-2,-2,-2,-2,-2,-2],[-2,-2,-2,-2,-2,-2,-2,-2,-2,-2],[-2,-2,-2,-2,-2,-2,-2,-2,-2,-2],[-2,-2,-2,-2,-2,-2,-2,-2,-2,-2]];
+    count = 0;
+    grid = new Array(grid_size);
+    for(var i = 0; i< grid_size; i++){
+        grid[i] = new Array(grid_size);
+    }
     sc = canvas_size / grid_size;
     setgrid();
 
@@ -24,6 +38,9 @@ function setup() {
         setgrid();
         loop();
     });
+
+    //no right clicking
+    document.addEventListener('contextmenu', event => event.preventDefault());
 
 }
 
@@ -38,7 +55,7 @@ function setgrid(){
                 grid[i][j] = -2;
         }
     }
-    for(i = 0; i < grid_size * random(1, 3) ; i++ ){
+    for(i = 0; i < grid_size * random(0, 1) ; i++ ){
         x = floor(random(0, grid_size));
         y = floor(random(0, grid_size));
         if(grid[x][y] != -2){
@@ -65,8 +82,8 @@ function display(){
                 rect(sc/2, sc/2, sc-10, sc-10, 15, 15, 15, 15);
                 if(grid[i][j] !== 0){
                     fill(25);
-                    textSize(32);
-                    textFont('Helvetica');
+                    textSize(36);
+                    textFont(myfont);
                     textAlign(CENTER, CENTER);
                     text(grid[i][j]+"", sc/2, sc/2);
                 }
@@ -81,7 +98,6 @@ function display(){
 }
 // Function to perform actions based on user input
 function mouseClicked(){
-    event.preventDefault();
     mx = mouseX;
     my = mouseY;
 
@@ -90,16 +106,24 @@ function mouseClicked(){
     x = floor(mx / sc);
     y = floor(my / sc);
 
-    if (mouseButton === RIGHT) {
-         console.log("Right");
-    }
-
     if(grid[x][y] === -2){
-        grid[x][y] = findValue(x,y) ;
+        grid[x][y] = findValue(x,y);
+        count++;
+        if(grid[x][y] === 0){
+            expose(x,y);
+        }
+        checkWon();
     }
     if(grid[x][y] === -1){
-        grid[x][y] = -5;
-        gameOver();
+        if(count === 0){
+            grid[x][y] = -2;
+            mouseClicked();
+        }
+        else{
+            grid[x][y] = -5;
+            gameOver();
+        }
+        count++;
     }
 }
 //function to stop game after game over
@@ -123,6 +147,41 @@ function findValue(x,y){
         }
     }
     return c;
+}
+
+function expose(x,y){
+    for(var i = x-1; i <= x+1 && i < grid_size; i++){
+        if(i<0)continue;
+        for(var j = y-1; j <= y+1 && j < grid_size; j++){
+            if(j<0)continue;
+            if(grid[i][j] === -2){
+                grid[i][j] = findValue(i,j);
+                if(grid[i][j] === 0){
+                    expose(i,j);
+                }
+            }
+        }
+    }
+}
+
+function checkWon(){
+    var iswon = true;
+    for(var i = 0; i< grid_size;i++){
+        for(var j = 0; j< grid_size;j++){
+            if(grid[i][j] === -2 || grid[i][j] === -5){
+                iswon = false;
+                break;
+            }
+        }
+        if(!iswon)break;
+    }
+    won = iswon;
+    if(iswon){
+        // textSize(32);
+        // textFont('Helvetica');
+        // textAlign(CENTER, CENTER);
+        // text(grid[i][j]+"", sc/2, sc/2);
+    }
 }
 
 // 0 : not bomb and no adjacent bomb (opened) (white)
