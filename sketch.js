@@ -9,7 +9,7 @@ var won = false;
 var myfont;
 function preload(){
     try{
-        myfont = loadFont('http://sayan01.github.io/Minesweeper/assets/text.ttf');
+        myfont = loadFont('https://sayan01.github.io/Minesweeper/assets/text.ttf');
     }
     catch(e){
 
