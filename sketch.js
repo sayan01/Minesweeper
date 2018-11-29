@@ -9,14 +9,14 @@ var won = false;
 var myfont;
 function preload(){
     try{
-        myfont = loadFont('https://sayan01.github.io/Minesweeper/assets/text.ttf');
+        myfont = loadFont('assets/text.ttf');
     }
     catch(e){
 
     }
 }
 function setup() {
-    console.log("Version 1.9");
+    console.log("Version 2.2");
     canvas_size = 800;
     createCanvas(canvas_size , canvas_size);
     grid_size = 15;
@@ -47,6 +47,7 @@ function setup() {
 function draw() {
     background(51);
     display();
+    checkWon();
 }
 
 function setgrid(){
@@ -165,22 +166,26 @@ function expose(x,y){
 }
 
 function checkWon(){
+    // console.log("check");
     var iswon = true;
     for(var i = 0; i< grid_size;i++){
         for(var j = 0; j< grid_size;j++){
             if(grid[i][j] === -2 || grid[i][j] === -5){
                 iswon = false;
-                break;
             }
         }
         if(!iswon)break;
     }
     won = iswon;
     if(iswon){
-        // textSize(32);
-        // textFont('Helvetica');
-        // textAlign(CENTER, CENTER);
-        // text(grid[i][j]+"", sc/2, sc/2);
+        fill(51,51,250);
+        stroke(250);
+        strokeWeight(5);
+        textSize(128);
+        textFont(myfont);
+        textAlign(CENTER, CENTER);
+        text("You Won!", grid_size/2*sc, grid_size/2*sc);
+        noLoop();
     }
 }
 
