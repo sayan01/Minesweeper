@@ -16,7 +16,7 @@ function preload(){
     }
 }
 function setup() {
-    console.log("Version 2.2");
+    console.log("Version 2.5");
     canvas_size = 800;
     createCanvas(canvas_size , canvas_size);
     grid_size = 15;
@@ -178,13 +178,16 @@ function checkWon(){
     }
     won = iswon;
     if(iswon){
-        fill(51,51,250);
-        stroke(250);
-        strokeWeight(5);
+        push();
+        fill(51);
+        rectMode(CENTER);
+        rect(grid_size/2*sc, grid_size/2*sc,600,150,15,15,15,15);
+        fill(250);
         textSize(128);
         textFont(myfont);
         textAlign(CENTER, CENTER);
         text("You Won!", grid_size/2*sc, grid_size/2*sc);
+        pop();
         noLoop();
     }
 }
