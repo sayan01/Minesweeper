@@ -53,6 +53,7 @@ function draw() {
 }
 
 function setgrid(){
+    count = 0;
     for(i = 0; i< grid_size;i++){
         for(j = 0;j<grid_size;j++){
                 grid[i][j] = -2;
