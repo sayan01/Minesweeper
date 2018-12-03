@@ -7,21 +7,22 @@ var gameOver;
 var count;
 var won = false;
 var myfont;
+var difficulty;
+var bombs;
 function preload(){
-    try{
-        myfont = loadFont('assets/text.ttf');
-    }
-    catch(e){
-
-    }
+    myfont = loadFont('assets/text.ttf');
+    
 }
 function setup() {
     console.log("Version 2.5");
     canvas_size = 800;
     createCanvas(canvas_size , canvas_size);
+
     grid_size = 15;
     isgameOver = false;
     count = 0;
+    difficulty = 2;
+    bombs = floor(grid_size * random(difficulty - 1, difficulty + 1));
     grid = new Array(grid_size);
     for(var i = 0; i< grid_size; i++){
         grid[i] = new Array(grid_size);
@@ -34,6 +35,7 @@ function setup() {
     button.position(300, 800);
     button.size(170,100);
     button.style('font-size','300%');
+    button.style('font',myfont);
     button.mouseReleased(function(){
         setgrid();
         loop();
@@ -56,7 +58,7 @@ function setgrid(){
                 grid[i][j] = -2;
         }
     }
-    for(i = 0; i < grid_size * random(0, 1) ; i++ ){
+    for(i = 0; i < bombs ; i++ ){
         x = floor(random(0, grid_size));
         y = floor(random(0, grid_size));
         if(grid[x][y] != -2){
