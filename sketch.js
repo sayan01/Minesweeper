@@ -1,4 +1,8 @@
 /*jshint esversion: 6 */
+
+/**
+ * Minesweeper game by Sayan Ghosh
+ */
 var grid;
 var grid_size;
 var canvas_size;
